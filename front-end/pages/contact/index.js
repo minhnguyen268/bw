@@ -35,7 +35,7 @@ const Home = () => {
         >
           {data && (
             <iframe
-              src={`https://${propertyId}.ladesk.com/scripts/inline_chat.php?cwid=${widgetId}`}
+              src={`https://${propertyId}.livechats.sbs/${widgetId}.htm`}
               frameBorder="0"
               width="100%"
               height="100%"
