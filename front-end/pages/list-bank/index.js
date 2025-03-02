@@ -7,7 +7,10 @@ import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
 const Home = () => {
+  const { t } = useTranslation("common");
   const { data: session, status } = useSession();
 
   useEffect(() => {
@@ -25,7 +28,7 @@ const Home = () => {
       {isLoading && <LoadingBox isLoading={isLoading} />}
 
       <Layout>
-        <h1 className="title-h1">Liên kết ngân hàng</h1>
+        <h1 className="title-h1">{t("Linked bank account")}</h1>
 
         <Box
           sx={{
@@ -40,7 +43,7 @@ const Home = () => {
             }}
           >
             <Link href="/list-bank/add">
-              <Button>Thêm tài khoản ngân hàng</Button>
+              <Button>{t("Add bank account")}</Button>
             </Link>
           </Box>
           {data?.metadata?.results === 0 && (
@@ -49,7 +52,7 @@ const Home = () => {
                 textAlign: "center",
               }}
             >
-              Hiện chưa có ngân hàng
+              {t("Bank empty")}
             </Typography>
           )}
 
