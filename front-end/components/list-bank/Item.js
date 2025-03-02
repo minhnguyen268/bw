@@ -4,7 +4,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const Item = ({ item }) => {
   const { t } = useTranslation("common");
