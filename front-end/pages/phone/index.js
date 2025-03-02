@@ -16,7 +16,6 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import useGetInformationUser from "@/hooks/useGetInformationUser";
-import { useTranslation } from "react-i18next";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -81,7 +80,7 @@ const Phone = () => {
       <NextSeo title="Đổi số điện thoại" />
       <LoadingBox isSuccess={loginStatus === "success"} isLoading={loginStatus === "loading"} />
       <Layout>
-        <h1 className="title-h1">{t("Phone number")}</h1>
+        <h1 className="title-h1">Số điện thoại</h1>
 
         <form
           style={{
@@ -94,7 +93,7 @@ const Phone = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div style={{ fontSize: "20px", paddingBottom: "10px" }}>
-            {t("Số điện thoại hiện tại")}: {show ? data.soDienThoai : maskedPhone}{" "}
+            Số điện thoại hiện tại: {show ? data.soDienThoai : maskedPhone}{" "}
             {/* {!show && (
               <VisibilityIcon
                 sx={{
@@ -127,7 +126,7 @@ const Phone = () => {
               }}
             /> */}
           </div>
-          <div style={{ fontSize: "20px" }}>{t("Đổi số điện thoại mới")}</div>
+          <div style={{ fontSize: "20px" }}>Đổi số điện thoại mới</div>
 
           <FormControl
             sx={{
@@ -140,7 +139,7 @@ const Phone = () => {
               control={control}
               render={({ field: { ref, ...field } }) => (
                 <OutlinedInput
-                  placeholder={t("Phone number")}
+                  placeholder="Số điện thoại"
                   type={"text"}
                   size="small"
                   fullWidth
