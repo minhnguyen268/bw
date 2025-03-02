@@ -16,8 +16,13 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import useGetInformationUser from "@/hooks/useGetInformationUser";
+import { useTranslation } from "react-i18next";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Phone = () => {
+  const { t } = useTranslation("common");
   const { data: session, status } = useSession();
   const [loginStatus, setLoginStatus] = useState(null);
   const [showPassword, setShowPassword] = useState({
@@ -25,15 +30,16 @@ const Phone = () => {
     newPassword: false,
     confirmNewPassword: false,
   });
+  const [show, setShow] = useState(false);
 
-  const { data, isLoading } = useGetInformationUser();
+  const { data, isLoading, refetch } = useGetInformationUser();
 
   // form validation rules
   const validationSchema = Yup.object().shape({
     phone: Yup.string()
-      .required("Vui lòng nhập số điện thoại")
-      .trim("Số điện thoại không hợp lệ")
-      .matches(/^0\d{9,10}$/, "Số điện thoại không hợp lệ")
+      .required(t("Invalid phone number"))
+      .trim(t("Invalid phone number"))
+      .matches(/^0\d{9,10}$/, t("Invalid phone number"))
       .strict(true),
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
@@ -56,9 +62,10 @@ const Phone = () => {
     try {
       setLoginStatus("loading");
       const result = await UserService.changePhone(data.phone);
-      toast.success(result?.data?.message ?? "Đổi mật khẩu thành công");
+      toast.success(t(result?.data?.message) ?? t("Change phone number success"));
       setLoginStatus("success");
-      reset();
+      await refetch();
+      reset({ phone: "" });
     } catch (err) {
       toast.error(err?.response?.data?.message);
       console.log(err);
@@ -67,12 +74,14 @@ const Phone = () => {
 
   if (isLoading) return;
 
+  const maskedPhone = `${data.soDienThoai.slice(0, 3)}***${data.soDienThoai.slice(-3)}`;
+
   return (
     <>
-      <NextSeo title="Đổi mật khẩu" />
+      <NextSeo title="Đổi số điện thoại" />
       <LoadingBox isSuccess={loginStatus === "success"} isLoading={loginStatus === "loading"} />
       <Layout>
-        <h1 className="title-h1">Đổi số điện thoại</h1>
+        <h1 className="title-h1">{t("Phone number")}</h1>
 
         <form
           style={{
@@ -84,6 +93,42 @@ const Phone = () => {
           }}
           onSubmit={handleSubmit(onSubmit)}
         >
+          <div style={{ fontSize: "20px", paddingBottom: "10px" }}>
+            {t("Số điện thoại hiện tại")}: {show ? data.soDienThoai : maskedPhone}{" "}
+            {/* {!show && (
+              <VisibilityIcon
+                sx={{
+                  fontSize: "2rem",
+                  marginLeft: "1.5rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => setShow(!show)}
+              />
+            )}
+            {show && (
+              <VisibilityOffIcon
+                sx={{
+                  fontSize: "2rem",
+                  marginLeft: "1.5rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => setShow(!show)}
+              />
+            )}
+            <ContentCopyIcon
+              sx={{
+                fontSize: "2rem",
+                marginLeft: "1.2rem",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                navigator.clipboard.writeText(data.soDienThoai);
+                toast.success(t("Copied to clipboard"));
+              }}
+            /> */}
+          </div>
+          <div style={{ fontSize: "20px" }}>{t("Đổi số điện thoại mới")}</div>
+
           <FormControl
             sx={{
               display: "flex",
@@ -95,7 +140,7 @@ const Phone = () => {
               control={control}
               render={({ field: { ref, ...field } }) => (
                 <OutlinedInput
-                  placeholder="Số điện thoại"
+                  placeholder={t("Phone number")}
                   type={"text"}
                   size="small"
                   fullWidth
@@ -104,13 +149,12 @@ const Phone = () => {
                   {...field}
                 />
               )}
-              defaultValue={data.soDienThoai}
             />
             <ErrorMessageLabel>{errors.phone ? errors.phone.message : ""}</ErrorMessageLabel>
           </FormControl>
 
           <Button type="submit" onClick={handleSubmit(onSubmit)} variant="contained">
-            Xác nhận
+            {t("Confirm")}
           </Button>
         </form>
       </Layout>
