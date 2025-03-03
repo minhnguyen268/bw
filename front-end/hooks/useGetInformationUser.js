@@ -12,7 +12,10 @@ const useGetInformationUser = () => {
     }
   };
 
-  const { data, error, isLoading, isError, refetch } = useQuery(["get-detail-user"], () => getData());
+  const { data, error, isLoading, isError, refetch } = useQuery(
+    ["get-detail-user"],
+    () => getData()
+  );
   useEffect(() => {
     if (isError) {
       throw new Error(error);
