@@ -16,9 +16,6 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import useGetInformationUser from "@/hooks/useGetInformationUser";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Phone = () => {
   const { data: session, status } = useSession();
@@ -73,11 +70,8 @@ const Phone = () => {
 
   return (
     <>
-      <NextSeo title="Đổi số điện thoại" />
-      <LoadingBox
-        isSuccess={loginStatus === "success"}
-        isLoading={loginStatus === "loading"}
-      />
+     <NextSeo title="Đổi số điện thoại" />
+     <LoadingBox isSuccess={loginStatus === "success"} isLoading={loginStatus === "loading"} />
       <Layout>
         <h1 className="title-h1">Đổi số điện thoại</h1>
 
