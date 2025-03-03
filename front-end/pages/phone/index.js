@@ -28,6 +28,7 @@ const Phone = () => {
     newPassword: false,
     confirmNewPassword: false,
   });
+  const [show, setShow] = useState(false);
 
   const { data, isLoading } = useGetInformationUser();
 
@@ -70,6 +71,8 @@ const Phone = () => {
   };
 
   if (isLoading) return;
+
+  const maskedPhone = `${data.soDienThoai.slice(0, 3)}***${data.soDienThoai.slice(-3)}`;
 
   return (
     <>
