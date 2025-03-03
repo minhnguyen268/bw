@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 
 const Item = ({ item }) => {
-  const { t } = useTranslation("common");
   const [show, setShow] = useState(false);
   const masked =
     item.soTaiKhoan.length <= 5
@@ -75,7 +74,7 @@ const Item = ({ item }) => {
               }}
               onClick={() => {
                 navigator.clipboard.writeText(item.soTaiKhoan);
-                toast.success(t("Copied to clipboard"));
+                toast.success("Copy thành công");
               }}
             /> */}
           </Typography>
