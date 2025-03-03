@@ -7,9 +7,7 @@ import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useEffect } from "react";
-
 const Home = () => {
-  const { t } = useTranslation("common");
   const { data: session, status } = useSession();
 
   useEffect(() => {
@@ -27,7 +25,7 @@ const Home = () => {
       {isLoading && <LoadingBox isLoading={isLoading} />}
 
       <Layout>
-        <h1 className="title-h1">Liên kết tài khoản ngân hàng</h1>
+        <h1 className="title-h1">Liên kết ngân hàng</h1>
 
         <Box
           sx={{
@@ -51,7 +49,7 @@ const Home = () => {
                 textAlign: "center",
               }}
             >
-              Ngân hàng trống
+              Hiện chưa có ngân hàng
             </Typography>
           )}
 
