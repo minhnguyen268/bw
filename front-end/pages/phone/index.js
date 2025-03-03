@@ -56,10 +56,9 @@ const Phone = () => {
     try {
       setLoginStatus("loading");
       const result = await UserService.changePhone(data.phone);
-      toast.success(result?.data?.message ?? "Đổi số điện thoại thành công");
+      toast.success(result?.data?.message ?? "Đổi mật khẩu thành công");
       setLoginStatus("success");
-      await refetch();
-      reset({ phone: "" });
+      reset();
     } catch (err) {
       toast.error(err?.response?.data?.message);
       console.log(err);
@@ -70,8 +69,8 @@ const Phone = () => {
 
   return (
     <>
-     <NextSeo title="Đổi số điện thoại" />
-     <LoadingBox isSuccess={loginStatus === "success"} isLoading={loginStatus === "loading"} />
+      <NextSeo title="Đổi mật khẩu" />
+      <LoadingBox isSuccess={loginStatus === "success"} isLoading={loginStatus === "loading"} />
       <Layout>
         <h1 className="title-h1">Đổi số điện thoại</h1>
 
@@ -85,42 +84,6 @@ const Phone = () => {
           }}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div style={{ fontSize: "20px", paddingBottom: "10px" }}>
-            Số điện thoại hiện tại: {show ? data.soDienThoai : maskedPhone}{" "}
-            {/* {!show && (
-              <VisibilityIcon
-                sx={{
-                  fontSize: "2rem",
-                  marginLeft: "1.5rem",
-                  cursor: "pointer",
-                }}
-                onClick={() => setShow(!show)}
-              />
-            )}
-            {show && (
-              <VisibilityOffIcon
-                sx={{
-                  fontSize: "2rem",
-                  marginLeft: "1.5rem",
-                  cursor: "pointer",
-                }}
-                onClick={() => setShow(!show)}
-              />
-            )}
-            <ContentCopyIcon
-              sx={{
-                fontSize: "2rem",
-                marginLeft: "1.2rem",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                navigator.clipboard.writeText(data.soDienThoai);
-                toast.success("Copy thành công");
-              }}
-            /> */}
-          </div>
-          <div style={{ fontSize: "20px" }}>Đổi số điện thoại mới</div>
-
           <FormControl
             sx={{
               display: "flex",
@@ -141,17 +104,12 @@ const Phone = () => {
                   {...field}
                 />
               )}
+              defaultValue={data.soDienThoai}
             />
-            <ErrorMessageLabel>
-              {errors.phone ? errors.phone.message : ""}
-            </ErrorMessageLabel>
+            <ErrorMessageLabel>{errors.phone ? errors.phone.message : ""}</ErrorMessageLabel>
           </FormControl>
 
-          <Button
-            type="submit"
-            onClick={handleSubmit(onSubmit)}
-            variant="contained"
-          >
+          <Button type="submit" onClick={handleSubmit(onSubmit)} variant="contained">
             Xác nhận
           </Button>
         </form>
