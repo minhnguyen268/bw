@@ -21,7 +21,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Phone = () => {
-  const { t } = useTranslation("common");
   const { data: session, status } = useSession();
   const [loginStatus, setLoginStatus] = useState(null);
   const [showPassword, setShowPassword] = useState({
@@ -29,9 +28,8 @@ const Phone = () => {
     newPassword: false,
     confirmNewPassword: false,
   });
-  const [show, setShow] = useState(false);
 
-  const { data, isLoading, refetch } = useGetInformationUser();
+  const { data, isLoading } = useGetInformationUser();
 
   // form validation rules
   const validationSchema = Yup.object().shape({
@@ -61,7 +59,7 @@ const Phone = () => {
     try {
       setLoginStatus("loading");
       const result = await UserService.changePhone(data.phone);
-      toast.success(t(result?.data?.message) ?? "Đổi mật khẩu thành công");
+      toast.success(result?.data?.message ?? "Đổi số điện thoại thành công");
       setLoginStatus("success");
       await refetch();
       reset({ phone: "" });
@@ -73,12 +71,13 @@ const Phone = () => {
 
   if (isLoading) return;
 
-  const maskedPhone = `${data.soDienThoai.slice(0, 3)}***${data.soDienThoai.slice(-3)}`;
-
   return (
     <>
       <NextSeo title="Đổi số điện thoại" />
-      <LoadingBox isSuccess={loginStatus === "success"} isLoading={loginStatus === "loading"} />
+      <LoadingBox
+        isSuccess={loginStatus === "success"}
+        isLoading={loginStatus === "loading"}
+      />
       <Layout>
         <h1 className="title-h1">Đổi số điện thoại</h1>
 
@@ -94,6 +93,37 @@ const Phone = () => {
         >
           <div style={{ fontSize: "20px", paddingBottom: "10px" }}>
             Số điện thoại hiện tại: {show ? data.soDienThoai : maskedPhone}{" "}
+            {/* {!show && (
+              <VisibilityIcon
+                sx={{
+                  fontSize: "2rem",
+                  marginLeft: "1.5rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => setShow(!show)}
+              />
+            )}
+            {show && (
+              <VisibilityOffIcon
+                sx={{
+                  fontSize: "2rem",
+                  marginLeft: "1.5rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => setShow(!show)}
+              />
+            )}
+            <ContentCopyIcon
+              sx={{
+                fontSize: "2rem",
+                marginLeft: "1.2rem",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                navigator.clipboard.writeText(data.soDienThoai);
+                toast.success("Copy thành công");
+              }}
+            /> */}
           </div>
           <div style={{ fontSize: "20px" }}>Đổi số điện thoại mới</div>
 
@@ -118,11 +148,17 @@ const Phone = () => {
                 />
               )}
             />
-            <ErrorMessageLabel>{errors.phone ? errors.phone.message : ""}</ErrorMessageLabel>
+            <ErrorMessageLabel>
+              {errors.phone ? errors.phone.message : ""}
+            </ErrorMessageLabel>
           </FormControl>
 
-          <Button type="submit" onClick={handleSubmit(onSubmit)} variant="contained">
-            {t("Confirm")}
+          <Button
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
+            variant="contained"
+          >
+            Xác nhận
           </Button>
         </form>
       </Layout>
