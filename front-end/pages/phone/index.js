@@ -21,7 +21,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Phone = () => {
-  const { t } = useTranslation("common");
   const { data: session, status } = useSession();
   const [loginStatus, setLoginStatus] = useState(null);
   const [showPassword, setShowPassword] = useState({
@@ -29,16 +28,15 @@ const Phone = () => {
     newPassword: false,
     confirmNewPassword: false,
   });
-  const [show, setShow] = useState(false);
 
-  const { data, isLoading, refetch } = useGetInformationUser();
+  const { data, isLoading } = useGetInformationUser();
 
   // form validation rules
   const validationSchema = Yup.object().shape({
     phone: Yup.string()
-      .required(t("Invalid phone number"))
-      .trim(t("Invalid phone number"))
-      .matches(/^0\d{9,10}$/, t("Invalid phone number"))
+      .required("Vui lòng nhập số điện thoại")
+      .trim("Số điện thoại không hợp lệ")
+      .matches(/^0\d{9,10}$/, "Số điện thoại không hợp lệ")
       .strict(true),
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
@@ -61,7 +59,7 @@ const Phone = () => {
     try {
       setLoginStatus("loading");
       const result = await UserService.changePhone(data.phone);
-      toast.success(t(result?.data?.message) ?? t("Change phone number success"));
+      toast.success(result?.data?.message ?? "Đổi số điện thoại thành công");
       setLoginStatus("success");
       await refetch();
       reset({ phone: "" });
@@ -73,14 +71,15 @@ const Phone = () => {
 
   if (isLoading) return;
 
-  const maskedPhone = `${data.soDienThoai.slice(0, 3)}***${data.soDienThoai.slice(-3)}`;
-
   return (
     <>
       <NextSeo title="Đổi số điện thoại" />
-      <LoadingBox isSuccess={loginStatus === "success"} isLoading={loginStatus === "loading"} />
+      <LoadingBox
+        isSuccess={loginStatus === "success"}
+        isLoading={loginStatus === "loading"}
+      />
       <Layout>
-        <h1 className="title-h1">Số điện thoại</h1>
+        <h1 className="title-h1">Đổi số điện thoại</h1>
 
         <form
           style={{
@@ -122,7 +121,7 @@ const Phone = () => {
               }}
               onClick={() => {
                 navigator.clipboard.writeText(data.soDienThoai);
-                toast.success(t("Copied to clipboard"));
+                toast.success("Copy thành công");
               }}
             /> */}
           </div>
@@ -149,11 +148,17 @@ const Phone = () => {
                 />
               )}
             />
-            <ErrorMessageLabel>{errors.phone ? errors.phone.message : ""}</ErrorMessageLabel>
+            <ErrorMessageLabel>
+              {errors.phone ? errors.phone.message : ""}
+            </ErrorMessageLabel>
           </FormControl>
 
-          <Button type="submit" onClick={handleSubmit(onSubmit)} variant="contained">
-            {t("Confirm")}
+          <Button
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
+            variant="contained"
+          >
+            Xác nhận
           </Button>
         </form>
       </Layout>
