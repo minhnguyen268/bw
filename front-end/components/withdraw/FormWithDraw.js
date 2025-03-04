@@ -15,6 +15,64 @@ import * as Yup from "yup";
 import LoadingBox from "../homePage/LoadingBox";
 import ErrorMessageLabel from "../input/ErrorMessageLabel";
 import OutlinedInput from "../input/OutlinedInput";
+
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+
+const BankItem = ({ item }) => {
+  const [show, setShow] = useState(false);
+  const masked =
+    item.soTaiKhoan.length <= 5
+      ? "".padStart(item.soTaiKhoan.length, "*")
+      : `${item.soTaiKhoan.slice(0, item.soTaiKhoan.length - 5)}*****`;
+
+  return (
+    <div>
+      {item.tenNganHang} - {item.tenChuTaiKhoan} -{" "}
+      {show ? item.soTaiKhoan : masked}{" "}
+      {!show && (
+        <VisibilityIcon
+          sx={{
+            fontSize: "2rem",
+            marginLeft: "1.5rem",
+            cursor: "pointer",
+          }}
+          onClick={(e) => {
+            setShow(!show);
+            e.stopPropagation();
+          }}
+        />
+      )}
+      {show && (
+        <VisibilityOffIcon
+          sx={{
+            fontSize: "2rem",
+            marginLeft: "1.5rem",
+            cursor: "pointer",
+          }}
+          onClick={(e) => {
+            setShow(!show);
+            e.stopPropagation();
+          }}
+        />
+      )}
+      <ContentCopyIcon
+        sx={{
+          fontSize: "2rem",
+          marginLeft: "1.2rem",
+          cursor: "pointer",
+        }}
+        onClick={(e) => {
+          navigator.clipboard.writeText(item.soTaiKhoan);
+          toast.success("Đã sao chép số tài khoản");
+          e.stopPropagation();
+        }}
+      />
+    </div>
+  );
+};
+
 const FormWithdraw = ({ listBank }) => {
   const getBalance = useSelector((state) => state.balance.balance);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +87,10 @@ const FormWithdraw = ({ listBank }) => {
     nganHang: Yup.string().required("Vui lòng chọn ngân hàng"),
     matKhauRutTien: Yup.string()
       .required("Vui lòng nhập mật khẩu rút tiền")
-      .min(MIN_LENGTH_PASSWORD, `Mật khẩu rút tiền phải từ ${MIN_LENGTH_PASSWORD} kí tự trở lên`)
+      .min(
+        MIN_LENGTH_PASSWORD,
+        `Mật khẩu rút tiền phải từ ${MIN_LENGTH_PASSWORD} kí tự trở lên`
+      )
       .trim("Mật khẩu rút tiền không hợp lệ")
       .matches(/^\S*$/, "Mật khẩu rút tiền không hợp lệ")
       .strict(true),
@@ -60,7 +121,9 @@ const FormWithdraw = ({ listBank }) => {
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      toast.error(err?.response?.data?.message ?? "Có lỗi xảy ra khi tạo yêu cầu rút tiền");
+      toast.error(
+        err?.response?.data?.message ?? "Có lỗi xảy ra khi tạo yêu cầu rút tiền"
+      );
     }
   };
 
@@ -119,14 +182,16 @@ const FormWithdraw = ({ listBank }) => {
                   </OptionMenuItem>
                   {listBank.map((item, i) => (
                     <OptionMenuItem key={item._id} value={item._id}>
-                      {item.tenNganHang} - {item.tenChuTaiKhoan} - {item.soTaiKhoan}
+                      <BankItem item={item} />
                     </OptionMenuItem>
                   ))}
                 </Select>
               )}
               defaultValue=""
             />
-            <ErrorMessageLabel>{errors.nganHang ? errors.nganHang.message : ""}</ErrorMessageLabel>
+            <ErrorMessageLabel>
+              {errors.nganHang ? errors.nganHang.message : ""}
+            </ErrorMessageLabel>
           </FormControl>
           <FormControl
             variant="standard"
@@ -152,7 +217,9 @@ const FormWithdraw = ({ listBank }) => {
               )}
               defaultValue=""
             />
-            <ErrorMessageLabel>{errors.soTien ? errors.soTien.message : ""}</ErrorMessageLabel>
+            <ErrorMessageLabel>
+              {errors.soTien ? errors.soTien.message : ""}
+            </ErrorMessageLabel>
           </FormControl>
 
           <FormControl
@@ -173,8 +240,17 @@ const FormWithdraw = ({ listBank }) => {
                   error={errors.matKhauRutTien ? true : false}
                   endAdornment={
                     <InputAdornment position="start">
-                      <IconButton onClick={() => setShowPasswordWithdraw(!showPasswordWithdraw)} edge="end">
-                        {showPasswordWithdraw ? <VisibilityOff /> : <Visibility />}
+                      <IconButton
+                        onClick={() =>
+                          setShowPasswordWithdraw(!showPasswordWithdraw)
+                        }
+                        edge="end"
+                      >
+                        {showPasswordWithdraw ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }
@@ -184,7 +260,9 @@ const FormWithdraw = ({ listBank }) => {
               )}
               defaultValue=""
             />
-            <ErrorMessageLabel>{errors.matKhauRutTien ? errors.matKhauRutTien.message : ""}</ErrorMessageLabel>
+            <ErrorMessageLabel>
+              {errors.matKhauRutTien ? errors.matKhauRutTien.message : ""}
+            </ErrorMessageLabel>
           </FormControl>
 
           <Button
