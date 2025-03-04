@@ -45,3 +45,6 @@ textarea {
 #select-bank-option svg {
   display: none;
 }
+.MuiSvgIcon-root {
+  display: none;
+}
