@@ -31,44 +31,7 @@ const BankItem = ({ item }) => {
     <div>
       {item.tenNganHang} - {item.tenChuTaiKhoan} -{" "}
       {show ? item.soTaiKhoan : masked}{" "}
-      {!show && (
-        <VisibilityIcon
-          sx={{
-            fontSize: "2rem",
-            marginLeft: "1.5rem",
-            cursor: "pointer",
-          }}
-          onClick={(e) => {
-            setShow(!show);
-            e.stopPropagation();
-          }}
-        />
-      )}
-      {show && (
-        <VisibilityOffIcon
-          sx={{
-            fontSize: "2rem",
-            marginLeft: "1.5rem",
-            cursor: "pointer",
-          }}
-          onClick={(e) => {
-            setShow(!show);
-            e.stopPropagation();
-          }}
-        />
-      )}
-      <ContentCopyIcon
-        sx={{
-          fontSize: "2rem",
-          marginLeft: "1.2rem",
-          cursor: "pointer",
-        }}
-        onClick={(e) => {
-          navigator.clipboard.writeText(item.soTaiKhoan);
-          toast.success("Đã sao chép số tài khoản");
-          e.stopPropagation();
-        }}
-      />
+  
     </div>
   );
 };
