@@ -41,3 +41,7 @@ textarea {
   resize: vertical;
   font-family: "Noto Sans", "League Spartan", "Bebas Neue", "IBM Plex Sans", "Poppins", sans-serif;
 }
+
+#select-bank-option svg {
+  display: none;
+}
