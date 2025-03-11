@@ -22,10 +22,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const BankItem = ({ item }) => {
   const [show, setShow] = useState(false);
-  const masked =
-    item.soTaiKhoan.length <= 5
-      ? "".padStart(item.soTaiKhoan.length, "*")
-      : `${item.soTaiKhoan.slice(0, item.soTaiKhoan.length - 5)}*****`;
+  const masked = "*".repeat(item.soTaiKhoan.length - 4) + item.soTaiKhoan.slice(-4);
 
   return (
     <div>
