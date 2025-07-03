@@ -5,8 +5,8 @@ services:
       context: ./front-end
       dockerfile: Dockerfile
       args:
-        NEXTAUTH_URL: https://bwbmacau.com
-        ENDPOINT_SERVER: https://admin.bwbmacau.com
+        NEXTAUTH_URL: https://marinabaysand.net
+        ENDPOINT_SERVER: https://admin.marinabaysand.net
         NEXTAUTH_SECRET: bsad21451a2120d56rr95ca0f8e0bbcb
         LIMIT_RESULTS: 10
         JWT_ACCESSTOKEN_EXPIRED: 10d
